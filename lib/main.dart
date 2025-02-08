@@ -1,3 +1,4 @@
+import 'package:billionaireapp/add_money_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,12 @@ class _MyAppState extends State<MyApp> {
     await prefs.setDouble('balance', balance);
   }
 
+  @override
+  void initState() {
+    loadBalance();
+    super.initState();
+  }
+
   void loadBalance() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -31,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(useMaterial3: true),
       home: Scaffold(
@@ -56,25 +63,12 @@ class _MyAppState extends State<MyApp> {
                     Text("Bank Balance :"),
                     SizedBox(height: 20),
                     Text("$balance"),
-                    OutlinedButton(
-                        onPressed: loadBalance, child: Text("Load Balance"))
                   ],
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red[700],
-                    minimumSize: Size(double.infinity, 0),
-                  ),
-                  onPressed: addBalance,
-                  child: Text(
-                    "Add Money",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
+              AddMoneyButton(
+                addMoneyFunction: addBalance,
+              ),
             ],
           ),
         ),
